@@ -1,6 +1,71 @@
 <script>
-    // Add any JavaScript logic here if necessary
-  </script>
+	import { goto } from "$app/navigation";
+
+  let email = "";
+  let password = "";
+  let errorMessage = "";
+  let successMessage = "";
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      errorMessage = "Please fill in both email and password.";
+      return;
+    }
+
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      successMessage = data.message;
+      errorMessage = '';
+      goto('/feed');
+
+    } else {
+      errorMessage = data.message || 'An error occurred. Please try again.';
+      successMessage = '';
+    }
+  };
+</script>
+
+<div class="container">
+  <div class="left-section">
+    <h1>rxconnect</h1>
+    <p>rxconnect helps you connect and share with pharmacists.</p>
+  </div>
+
+  <div class="right-section">
+    <input
+      type="email"
+      placeholder="Email address"
+      bind:value={email}
+      required
+    />
+    <input
+      type="password"
+      placeholder="Password"
+      bind:value={password}
+      required
+    />
+    {#if errorMessage}
+      <p class="error-message">{errorMessage}</p>
+    {/if}
+    {#if successMessage}
+      <p class="success-message">{successMessage}</p>
+    {/if}
+    <button on:click={handleLogin}>Log in</button>
+    <a href="#">Forgotten password?</a>
+    <div class="create-account">
+      <button>Create new account</button>
+    </div>
+  </div>
+</div>
   
   <style>
     .container {
@@ -100,6 +165,18 @@
     .create-account button:hover {
       background-color: #36a420;
     }
+
+    .error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+
+  .success-message {
+    color: green;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
   
     @media (max-width: 768px) {
       .container {
@@ -118,23 +195,3 @@
       }
     }
   </style>
-  
-  <div class="container">
-    <!-- Left section for branding and tagline -->
-    <div class="left-section">
-      <h1>rxconnect</h1>
-      <p>rxconnect helps you connect and share with pharmacists.</p>
-    </div>
-  
-    <!-- Right section for the login form -->
-    <div class="right-section">
-      <input type="text" placeholder="Email address" />
-      <input type="password" placeholder="Password" />
-      <button>Log in</button>
-      <a href="#">Forgotten password?</a>
-      <div class="create-account">
-        <button>Create new account</button>
-      </div>
-    </div>
-  </div>
-  
