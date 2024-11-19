@@ -76,7 +76,7 @@
       border-radius: 50%;
       object-fit: cover;
     }
-  </style>cd 
+  </style>
   
   <div class="navbar">
     <!-- Left section -->

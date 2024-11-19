@@ -11,6 +11,13 @@ export default defineConfig({
 		})
 	],
 
+	// Add the server proxy configuration here
+	server: {
+		proxy: {
+			'/api': 'http://localhost:5000' // Proxy all requests to /api to your Express server
+		}
+	},
+
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
 	}
