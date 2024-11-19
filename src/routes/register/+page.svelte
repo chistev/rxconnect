@@ -152,7 +152,7 @@
             <div class="success-message">{successMessage}</div>
         {/if}
 
-        <a href="#" class="link">Already have an account?</a>
+        <a href="/login" class="link">Already have an account?</a>
     </div>
 
 </div>
@@ -171,17 +171,17 @@
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
+    padding: 1rem;
     width: 100%;
     max-width: 400px;
     text-align: center;
 }
 
 h1 {
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 25px;
+    line-height: 32px;
     margin-bottom: 1rem;
-    color: #162643;
+    color: #1c1e21;
     font-family: SFProDisplay-Bold, Helvetica, Arial, sans-serif;
     font-weight: 600;
 }
@@ -217,8 +217,10 @@ p {
 
 .label {
     font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    color: #1c1e21;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    color: #606770;
     margin-bottom: 0.5rem;
     display: block;
     text-align: left;
@@ -243,14 +245,15 @@ input[type="radio"] {
 }
 
 .submit-button {
-    background: #1877f2;
+    background: #00a400;
     color: #fff;
     padding: 0.75rem 1rem;
     font-size: 1rem;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    width: 100%;
+    width: 50%;
+    font-weight: bold;
 }
 
 .submit-button:hover {
@@ -263,10 +266,10 @@ input[type="radio"] {
     font-size: 14px;
     color: #1877f2;
     text-decoration: none;
-}
-
-.link:hover {
-    text-decoration: underline;
+    font-family: SFProText-Semibold, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
 }
 
 .input[type="email"] {
