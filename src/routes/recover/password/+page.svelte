@@ -1,11 +1,34 @@
-<script>
+<script lang="ts">
     import { goto } from "$app/navigation";
 
     let newPassword = '';
     let resetCode = new URLSearchParams(window.location.search).get('code');
+    let errorMessage: string | null = null; // Allow errorMessage to be null initially
+
+    // Define the validatePassword function with explicit types
+    const validatePassword = (password: string): string | null => {
+        const minLength = 6;
+        const maxLength = 20;
+        const regex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Za-z]).{6,20}$/;
+
+        if (password.length < minLength || password.length > maxLength) {
+            return `Password must be between ${minLength} and ${maxLength} characters long.`;
+        }
+
+        if (!regex.test(password)) {
+            return 'Password must contain at least one number, one letter, and one special character.';
+        }
+
+        return null;
+    };
 
     const handleSubmit = async () => {
-        const res = await fetch('/api/login/reset-password', {
+        errorMessage = validatePassword(newPassword);
+        if (errorMessage) {
+            return;
+        }
+
+        const res = await fetch('/api/login/change-password', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -16,7 +39,7 @@
         const data = await res.json();
         if (res.ok) {
             alert('Password updated successfully!');
-            goto('/feed');
+            goto('/login');
         } else {
             alert(data.message || 'An error occurred');
         }
@@ -27,6 +50,11 @@
     <div class="card">
         <h1>Choose a New Password</h1>
         <p>Create a new password that is at least 6 characters long. A strong password has a combination of letters, digits, and punctuation marks.</p>
+        
+        {#if errorMessage}
+            <div class="error">{errorMessage}</div>
+        {/if}
+
         <form on:submit|preventDefault={handleSubmit}>
             <input 
                 type="password" 
@@ -65,10 +93,11 @@
 
     h1 {
         font-size: 20px;
+        line-height: 24px;
         margin-bottom: 1rem;
         color: #162643;
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        font-weight: bold;
+        font-family: SFProDisplay-Bold, Helvetica, Arial, sans-serif;
+        font-weight: 600;
     }
 
     p {
@@ -114,6 +143,12 @@
 
     .continue-button:hover {
         background: #0056c1;
+    }
+
+    .error {
+        color: #ff0000;
+        margin-bottom: 1rem;
+        font-size: 14px;
     }
 
     @media (max-width: 480px) {
