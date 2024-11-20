@@ -1,28 +1,69 @@
 <script>
+	import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
-
     let securityCode = '';
     let email = '';
+    let errorMessage = '';
+    let successMessage = '';
 
     onMount(() => {
         const urlParams = new URLSearchParams(window.location.search);
         email = urlParams.get('email') || '';
     });
 
-    const handleSubmit = () => {
-        alert(`Entered code: ${securityCode}`);
+    const handleSubmit = async () => {
+        errorMessage = '';
+        successMessage = '';
+
+        try {
+            const res = await fetch('/api/login/reset-password/verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, securityCode })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || 'An error occurred');
+            }
+
+            successMessage = 'Security code verified successfully. You will be logged in shortly.';
+
+            setTimeout(() => {
+                window.location.href = '/feed';
+            }, 2000);
+
+        } catch (err) {
+            // Type guard to ensure `err` is an instance of `Error`
+            if (err instanceof Error) {
+                errorMessage = err.message;
+            } else {
+                errorMessage = 'An unexpected error occurred';
+            }
+        }
+    };
+
+	const handleCancel = () => {
+        goto('/login/identify');
     };
 </script>
 
 <div class="container">
     <div class="card">
         <h1>Enter security code</h1>
-        <p>
-            Please check your emails for a message with your code. Your code is 6 numbers long.
-        </p>
-        <p>
-            We sent your code to: <b>{email}</b>
-        </p>
+        <p>Please check your emails for a message with your code. Your code is 6 numbers long.</p>
+        <p>We sent your code to: <b>{email}</b></p>
+
+        {#if errorMessage}
+            <div class="error-message">{errorMessage}</div>
+        {/if}
+        {#if successMessage}
+            <div class="success-message">{successMessage}</div>
+        {/if}
+
         <form on:submit|preventDefault={handleSubmit}>
             <input
                 type="number"
@@ -32,11 +73,11 @@
                 required
             />
             <div class="button-group">
-                <button type="button" class="cancel-button">Cancel</button>
+                <button type="button" class="cancel-button" on:click={handleCancel}>Cancel</button>
                 <button type="submit" class="search-button">Continue</button>
             </div>
         </form>
-        <a href="#" class="resend-link">Didn’t get a code?</a>
+        <a href="/login/identify" class="resend-link">Didn’t get a code?</a>
     </div>
 </div>
 
@@ -137,6 +178,18 @@
 
     .resend-link:hover {
         text-decoration: underline;
+    }
+    
+    .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 1rem;
+    }
+
+    .success-message {
+        color: green;
+        font-size: 14px;
+        margin-top: 1rem;
     }
 
     @media (max-width: 480px) {
