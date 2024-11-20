@@ -1,5 +1,14 @@
 <script>
+    import { onMount } from 'svelte';
+
     let securityCode = '';
+    let email = '';
+
+    onMount(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        email = urlParams.get('email') || '';
+    });
+
     const handleSubmit = () => {
         alert(`Entered code: ${securityCode}`);
     };
@@ -12,11 +21,11 @@
             Please check your emails for a message with your code. Your code is 6 numbers long.
         </p>
         <p>
-            We sent your code to: <b>stephenowabie@gmail.com</b>
+            We sent your code to: <b>{email}</b>
         </p>
         <form on:submit|preventDefault={handleSubmit}>
             <input
-                type="text"
+                type="number"
                 placeholder="Enter code"
                 bind:value={securityCode}
                 class="input"

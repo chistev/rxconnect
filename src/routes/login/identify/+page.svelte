@@ -1,24 +1,39 @@
 <script>
+	import { goto } from "$app/navigation";
+
     let email = '';
-    const handleSubmit = () => {
-        alert(`You entered: ${email}`);
+    const handleSubmit = async () => {
+        const res = await fetch('/api/login/reset-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+            goto(`/recover?email=${encodeURIComponent(email)}`);
+        } else {
+            alert(data.message || 'An error occurred');
+        }
     };
 </script>
 
 <div class="container">
     <div class="card">
         <h1>Find Your Account</h1>
-        <p>Please enter your email address or mobile number to search for your account.</p>
+        <p>Please enter your email address to search for your account.</p>
         <form on:submit|preventDefault={handleSubmit}>
             <input 
-                type="text" 
+                type="email" 
                 placeholder="Email address" 
                 bind:value={email} 
                 class="input" 
                 required
             />
             <div class="button-group">
-                <button type="button" class="cancel-button">Cancel</button>
+                <a href="/login" class="cancel-button">Cancel</a>
                 <button type="submit" class="search-button">Search</button>
             </div>
         </form>
@@ -97,6 +112,7 @@
     .cancel-button {
         background: #f0f0f0;
         color: #333;
+        text-decoration: none;
     }
 
     .cancel-button:hover {

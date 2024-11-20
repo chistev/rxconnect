@@ -60,7 +60,7 @@
     {/if}
     <button on:click={handleLogin}>Log in</button>
     <div class="forgot-password">
-      <a href="#">Forgotten password?</a>
+      <a href="/login/identify">Forgotten password?</a>
     </div>
     <hr>
     <div class="create-account">
