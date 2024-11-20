@@ -22,26 +22,8 @@
     .navbar-left .logo {
       font-size: 24px;
       font-weight: bold;
-      color: #1877f2; /* Facebook blue color */
+      color: #1877f2;
       cursor: pointer;
-    }
-  
-    .search-bar {
-      display: flex;
-      align-items: center;
-      background-color: #f0f2f5;
-      padding: 5px 10px;
-      border-radius: 20px;
-      gap: 5px;
-      flex: 1;
-    }
-  
-    .search-bar input {
-      border: none;
-      outline: none;
-      background: none;
-      width: 100%;
-      font-size: 16px;
     }
   
     .navbar-right {
@@ -51,23 +33,23 @@
     }
   
     .navbar-right .icon, .navbar-right .profile {
-      width: 48px; /* Increased size */
-      height: 48px; /* Increased size */
+      width: 48px; 
+      height: 48px; 
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      background-color: #f0f2f5; /* Gray background color */
+      background-color: #f0f2f5; 
       cursor: pointer;
     }
   
     .navbar-right .icon i {
-      font-size: 24px; /* Increased icon size */
-      color: #606770; /* Icon color for visibility */
+      font-size: 24px; 
+      color: #606770; 
     }
   
     .navbar-right .icon:hover, .navbar-right .profile:hover {
-      background-color: #e0e0e0; /* Slightly darker gray on hover */
+      background-color: #e0e0e0;
     }
   
     .navbar-right .profile img {
@@ -79,12 +61,10 @@
   </style>
   
   <div class="navbar">
-    <!-- Left section -->
     <div class="navbar-left">
       <div class="logo">RxConnect</div>
     </div>
   
-    <!-- Right section -->
     <div class="navbar-right">
       <div class="icon">
         <i class="bi bi-chat-dots-fill"></i>
