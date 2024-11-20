@@ -1,5 +1,6 @@
 <script>
   let showChatDropdown = false;
+  let searchQuery = '';  // Store the search query
 
   // Example mock data for chat feed
   let chats = [
@@ -12,6 +13,11 @@
 
   function toggleChatDropdown() {
     showChatDropdown = !showChatDropdown;
+  }
+
+  // Filter chats based on search query
+  function filteredChats() {
+    return chats.filter(chat => chat.name.toLowerCase().includes(searchQuery.toLowerCase()));
   }
 </script>
 
@@ -155,6 +161,38 @@
     font-size: 12px;
     color: #999;
   }
+
+  .chat-search {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: #f9f9f9;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+  }
+
+  .chat-search input {
+    width: 100%;
+    padding: 8px 30px 8px 10px; /* Add padding for the search icon */
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+  }
+
+  .chat-search input:focus {
+    border-color: #1877f2; /* Focus effect */
+  }
+
+  .chat-search .search-icon {
+    position: absolute;
+    right: 10px;
+    font-size: 16px;
+    color: #606770;
+  }
+
 </style>
 
 <div class="navbar">
@@ -184,7 +222,14 @@
 
 <!-- Chat Dropdown -->
 <div class={`chat-dropdown ${showChatDropdown ? 'show' : ''}`}>
-  {#each chats as chat}
+  <!-- Search Box -->
+  <div class="chat-search">
+    <input type="text" placeholder="Search Messenger" bind:value={searchQuery} />
+    <i class="bi bi-search search-icon"></i>
+  </div>
+
+  <!-- Chat Items -->
+  {#each filteredChats() as chat}
     <div class="chat-item">
       <img src={chat.img} alt={chat.name} />
       <div class="details">
