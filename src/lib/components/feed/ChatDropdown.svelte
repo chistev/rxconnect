@@ -1,6 +1,5 @@
 <script lang="ts">
-	import ChatItem from "./chatdropdown/ChatItem.svelte";
-
+  import ChatItem from "./chatdropdown/ChatItem.svelte";
 
   type Chat = {
     name: string;
@@ -14,11 +13,17 @@
   export let chats: Chat[] = [];
 
   let hoveredChat: string | null = null; // Tracks which chat is being hovered
+  let activeMenuIndex: number | null = null; // Index of the chat with the open context menu
 
   function filteredChats() {
     return chats.filter(chat =>
       chat.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
+  }
+
+  function toggleMenu(index: number) {
+    // Toggle the context menu for the clicked chat
+    activeMenuIndex = activeMenuIndex === index ? null : index;
   }
 </script>
 
@@ -85,12 +90,13 @@
     <i class="bi bi-search search-icon"></i>
   </div>
 
-  {#each filteredChats() as chat}
+  {#each filteredChats() as chat, index}
     <ChatItem
       {chat}
       {hoveredChat}
       onHover={(name) => (hoveredChat = name)}
+      menuActive={activeMenuIndex === index} 
+      onToggleMenu={() => toggleMenu(index)}
     />
   {/each}
 </div>
-  
