@@ -1,20 +1,21 @@
 <script lang="ts">
-    type Chat = {
-      name: string;
-      lastMessage: string;
-      time: string;
-      img: string;
-    };
-  
-    export let showChatDropdown: boolean = false;  
-    export let searchQuery: string = '';  
-    export let chats: Chat[] = [];  
-  
-    function filteredChats() {
-      return chats.filter(chat => chat.name.toLowerCase().includes(searchQuery.toLowerCase()));
-    }
-  </script>
-  
+  type Chat = {
+    name: string;
+    lastMessage: string;
+    time: string;
+    img: string;
+  };
+
+  export let showChatDropdown: boolean = false;  
+  export let searchQuery: string = '';  
+  export let chats: Chat[] = [];  
+
+  let hoveredChat: string | null = null; // Tracks which chat is being hovered
+
+  function filteredChats() {
+    return chats.filter(chat => chat.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  }
+</script>  
   <style>
     .chat-dropdown {
       position: absolute;
@@ -107,6 +108,28 @@
       font-size: 16px;
       color: #606770;
     }
+
+    .three-dots {
+    font-size: 18px;
+    color: #606770;
+    margin-left: auto;
+    visibility: hidden;
+
+    /* Add circle background */
+  background-color: white;
+  border-radius: 50%; /* Makes it circular */
+  padding: 5px; /* Space around the icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Add a subtle shadow for better visibility */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .chat-item:hover .three-dots {
+    visibility: visible;
+  }
   </style>
   
   <div class={`chat-dropdown ${showChatDropdown ? 'show' : ''}`}>
@@ -116,14 +139,19 @@
     </div>
   
     {#each filteredChats() as chat}
-      <div class="chat-item">
+      <div 
+        class="chat-item" 
+        on:mouseenter={() => (hoveredChat = chat.name)} 
+        on:mouseleave={() => (hoveredChat = null)}
+      >
         <img src={chat.img} alt={chat.name} />
         <div class="details">
           <div class="name">{chat.name}</div>
           <div class="message">{chat.lastMessage}</div>
         </div>
         <div class="time">{chat.time}</div>
+        <!-- Display the three dots when hovering -->
+        <i class="bi bi-three-dots three-dots"></i>
       </div>
     {/each}
   </div>
-  
