@@ -1,9 +1,8 @@
 <script>
-	import ChatDropdown from "$lib/components/feed/ChatDropdown.svelte";
-
+  import ChatDropdown from "$lib/components/feed/ChatDropdown.svelte";
 
   let showChatDropdown = false;
-  let searchQuery = ''; 
+  let searchQuery = '';
 
   // Example mock data for chat feed
   let chats = [
@@ -99,6 +98,10 @@
     border-radius: 50%;
     object-fit: cover;
   }
+
+  .navbar-right .icon i.active {
+    color: #1877f2; /* Set the icon color to blue when active */
+  }
 </style>
 
 <div class="navbar">
@@ -114,8 +117,14 @@
   </div>
 
   <div class="navbar-right">
-    <div class="icon" on:click={toggleChatDropdown}>
-      <i class="bi bi-chat-dots-fill"></i>
+    <div 
+      class="icon" 
+      on:click={toggleChatDropdown}
+    >
+      <i 
+        class="bi bi-chat-dots-fill" 
+        class:active={showChatDropdown} 
+      ></i>
     </div>
     <div class="icon">
       <i class="bi bi-bell-fill"></i>
