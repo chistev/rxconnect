@@ -1,6 +1,5 @@
 <script lang="ts">
-	import NotificationsDropdown from "$lib/components/feed/NotificationsDropdown.svelte";
-
+  import NotificationsAndProfile from "$lib/components/feed/NotificationsAndProfile.svelte";
 
   let showNotifications = false;
 
@@ -53,8 +52,11 @@
   function handleNotificationClick(notification: Notification) {
     notification.viewed = true;
   }
-</script>
 
+  function toggleNotifications(value: boolean) {
+    showNotifications = value;
+  }
+</script>
 
 <style>
   .navbar {
@@ -103,47 +105,6 @@
   .navbar-center .coffee-btn:hover {
     background-color: #145dbf;  
   }
-
-  .navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .navbar-right .icon, .navbar-right .profile {
-    width: 48px; 
-    height: 48px; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: #f0f2f5; 
-    cursor: pointer;
-  }
-
-  .navbar-right .icon i {
-    font-size: 24px; 
-    color: #606770; 
-  }
-
-  .navbar-right .icon:hover, .navbar-right .profile:hover {
-    background-color: #e0e0e0;
-  }
-
-  .navbar-right .profile img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  .navbar-right .icon {
-    position: relative;
-  }
-
-  .navbar-right .icon .active {
-    color: #1877f2;
-  }
 </style>
 
 <div class="navbar">
@@ -158,19 +119,10 @@
     </a>
   </div>
 
-  <div class="navbar-right">
-    <div class="icon" on:click={() => (showNotifications = !showNotifications)}>
-      <i class="bi bi-bell-fill" class:active={showNotifications}></i>
-      
-      {#if showNotifications}
-        <NotificationsDropdown
-          notifications={notifications}
-          onNotificationClick={handleNotificationClick}
-        />
-      {/if}
-    </div>
-    <div class="profile">
-      <img src="/eminem.jpg" alt="Profile Picture" />
-    </div>
-  </div>
+  <NotificationsAndProfile 
+    {notifications} 
+    {showNotifications} 
+    on:toggleNotifications={event => toggleNotifications(event.detail)} 
+    {handleNotificationClick} 
+  />
 </div>
