@@ -32,6 +32,9 @@
       font-size: 14px;
       cursor: pointer;
       color: #333;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
   
     .context-menu button:hover {
@@ -40,10 +43,20 @@
   </style>
   
   <div class="context-menu">
-    <button on:click={onMarkAsUnread}>Mark as unread</button>
-    <button on:click={onMuteNotifications}>Mute notifications</button>
-    <button on:click={onAudioCall}>Audio call</button>
-    <button on:click={onVideoChat}>Video chat</button>
-    <button on:click={onBlock}>Block</button>
+    <button on:click={onMarkAsUnread}>
+      <i class="bi bi-envelope-open"></i> Mark as unread
+    </button>
+    <button on:click={onMuteNotifications}>
+      <i class="bi bi-volume-mute"></i> Mute notifications
+    </button>
+    <button on:click={onAudioCall}>
+      <i class="bi bi-phone"></i> Audio call
+    </button>
+    <button on:click={onVideoChat}>
+      <i class="bi bi-camera-video"></i> Video chat
+    </button>
+    <button on:click={onBlock}>
+      <i class="bi bi-person-x"></i> Block
+    </button>
   </div>
   
