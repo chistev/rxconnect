@@ -1,45 +1,60 @@
-<script>
+<script lang="ts">
+	import NotificationsDropdown from "$lib/components/feed/NotificationsDropdown.svelte";
+
+
   let showNotifications = false;
 
-// Mock data for notifications with profile pictures
-let notifications = [
-  { 
-    id: 1, 
-    text: "Nnaemeka Valentine likes your post: \"Don't attribute to malice what can be...\"", 
-    time: "2w", 
-    viewed: false, 
-    profilePic: "/eminem.jpg" 
-  },
-  { 
-    id: 2, 
-    text: "Raymond Mezieaneke likes your post: \"I've got big dreams for me, man. Nobody...\"", 
-    time: "3w", 
-    viewed: true, 
-    profilePic: "/eminem.jpg" 
-  },
-  { 
-    id: 3, 
-    text: "Princess Nite reacted to your comment: \"Princess Nite\".", 
-    time: "4w", 
-    viewed: false, 
-    profilePic: "/eminem.jpg" 
-  },
-  { 
-    id: 4, 
-    text: "Ogaga Michael Oghenegare commented on your post.", 
-    time: "4w", 
-    viewed: true, 
-    profilePic: "/eminem.jpg" 
-  },
-  { 
-    id: 5, 
-    text: "Nahum Oscar Cfc likes your post: \"Play stupid games, win stupid prizes.\"", 
-    time: "4w", 
-    viewed: true, 
-    profilePic: "/eminem.jpg" 
+  interface Notification {
+    id: number;
+    text: string;
+    time: string;
+    viewed: boolean;
+    profilePic: string;
   }
-];
+
+  let notifications: Notification[] = [
+    { 
+      id: 1, 
+      text: "Nnaemeka Valentine likes your post: \"Don't attribute to malice what can be...\"", 
+      time: "2w", 
+      viewed: false, 
+      profilePic: "/eminem.jpg" 
+    },
+    { 
+      id: 2, 
+      text: "Raymond Mezieaneke likes your post: \"I've got big dreams for me, man. Nobody...\"", 
+      time: "3w", 
+      viewed: true, 
+      profilePic: "/eminem.jpg" 
+    },
+    { 
+      id: 3, 
+      text: "Princess Nite reacted to your comment: \"Princess Nite\".", 
+      time: "4w", 
+      viewed: false, 
+      profilePic: "/eminem.jpg" 
+    },
+    { 
+      id: 4, 
+      text: "Ogaga Michael Oghenegare commented on your post.", 
+      time: "4w", 
+      viewed: true, 
+      profilePic: "/eminem.jpg" 
+    },
+    { 
+      id: 5, 
+      text: "Nahum Oscar Cfc likes your post: \"Play stupid games, win stupid prizes.\"", 
+      time: "4w", 
+      viewed: true, 
+      profilePic: "/eminem.jpg" 
+    }
+  ];
+
+  function handleNotificationClick(notification: Notification) {
+    notification.viewed = true;
+  }
 </script>
+
 
 <style>
   .navbar {
@@ -122,85 +137,20 @@ let notifications = [
     object-fit: cover;
   }
 
-  .navbar-right .icon i.active {
-    color: #1877f2;
-  }
-
-  .notifications-dropdown {
-    position: absolute;
-    right: 0;
-    top: 60px;
-    width: 300px;
-    max-height: 400px;
-    overflow-y: auto;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-  }
-
-  .notification-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 15px;
-    border-bottom: 1px solid #f0f2f5;
-    cursor: pointer;
-  }
-
-  .notification-item.unread {
-    background-color: #f0f8ff; /* Light blue for unread notifications */
-  }
-
-  .notification-item.read {
-    background-color: white; /* White for read notifications */
-  }
-
-  .notification-item:hover {
-    background-color: #f0f2f5;
-  }
-
-  .notification-profile-pic {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-    object-fit: cover;
-  }
-
-  .notification-text-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .notification-text {
-    font-size: 14px;
-    color: #333;
-  }
-
-  .notification-time {
-    font-size: 12px;
-    color: #888;
-    margin-top: 5px;
-  }
-
   .navbar-right .icon {
     position: relative;
   }
 
   .navbar-right .icon .active {
-    color: #1877f2; /* Bell icon active when dropdown is open */
+    color: #1877f2;
   }
 </style>
 
 <div class="navbar">
-  <!-- Navbar Left -->
   <div class="navbar-left">
     <div class="logo">RxConnect</div>
   </div>
 
-  <!-- Navbar Center -->
   <div class="navbar-center">
     <a href="https://www.buymeacoffee.com/chistev12" target="_blank" class="coffee-btn">
       <i class="bi bi-cup-hot"></i>
@@ -208,31 +158,15 @@ let notifications = [
     </a>
   </div>
 
-  <!-- Navbar Right -->
   <div class="navbar-right">
     <div class="icon" on:click={() => (showNotifications = !showNotifications)}>
       <i class="bi bi-bell-fill" class:active={showNotifications}></i>
-
-      <!-- Notifications Dropdown -->
+      
       {#if showNotifications}
-        <div class="notifications-dropdown">
-          {#each notifications as notification (notification.id)}
-            <div
-              class="notification-item {notification.viewed ? 'read' : 'unread'}"
-              on:click={() => (notification.viewed = true)}
-            >
-              <img 
-                src={notification.profilePic} 
-                alt="Profile Picture" 
-                class="notification-profile-pic" 
-              />
-              <div class="notification-text-container">
-                <div class="notification-text">{notification.text}</div>
-                <div class="notification-time">{notification.time}</div>
-              </div>
-            </div>
-          {/each}
-        </div>
+        <NotificationsDropdown
+          notifications={notifications}
+          onNotificationClick={handleNotificationClick}
+        />
       {/if}
     </div>
     <div class="profile">
