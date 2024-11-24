@@ -1,5 +1,14 @@
 <script>
+  let showNotifications = false;
 
+  // Mock data for notifications
+  let notifications = [
+    { id: 1, text: "Nnaemeka Valentine likes your post: \"Don't attribute to malice what can be...\"", time: "2w", viewed: false },
+    { id: 2, text: "Raymond Mezieaneke likes your post: \"I've got big dreams for me, man. Nobody...\"", time: "3w", viewed: true },
+    { id: 3, text: "Princess Nite reacted to your comment: \"Princess Nite\".", time: "4w", viewed: false },
+    { id: 4, text: "Ogaga Michael Oghenegare commented on your post.", time: "4w", viewed: true },
+    { id: 5, text: "Nahum Oscar Cfc likes your post: \"Play stupid games, win stupid prizes.\"", time: "4w", viewed: true }
+  ];
 </script>
 
 <style>
@@ -84,15 +93,70 @@
   }
 
   .navbar-right .icon i.active {
-    color: #1877f2; /* Set the icon color to blue when active */
+    color: #1877f2;
+  }
+
+  .notifications-dropdown {
+    position: absolute;
+    right: 0;
+    top: 60px;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+  }
+
+  .notification-item {
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #f0f2f5;
+    cursor: pointer;
+  }
+
+  .notification-item.unread {
+    background-color: #f0f8ff;
+  }
+
+  .notification-item.read {
+    background-color: white; 
+  }
+
+  .notification-item:hover {
+    background-color: #f0f2f5;
+  }
+
+  .notification-text {
+    font-size: 14px;
+    color: #333;
+  }
+
+  .notification-time {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+  }
+
+  .navbar-right .icon {
+    position: relative;
+  }
+
+  .navbar-right .icon .active {
+    color: #1877f2; 
   }
 </style>
 
 <div class="navbar">
+  <!-- Navbar Left -->
   <div class="navbar-left">
     <div class="logo">RxConnect</div>
   </div>
 
+  <!-- Navbar Center -->
   <div class="navbar-center">
     <a href="https://www.buymeacoffee.com/chistev12" target="_blank" class="coffee-btn">
       <i class="bi bi-cup-hot"></i>
@@ -100,9 +164,25 @@
     </a>
   </div>
 
+  <!-- Navbar Right -->
   <div class="navbar-right">
-    <div class="icon">
-      <i class="bi bi-bell-fill"></i>
+    <div class="icon" on:click={() => (showNotifications = !showNotifications)}>
+      <i class="bi bi-bell-fill" class:active={showNotifications}></i>
+
+      <!-- Notifications Dropdown -->
+      {#if showNotifications}
+        <div class="notifications-dropdown">
+          {#each notifications as notification (notification.id)}
+            <div
+              class="notification-item {notification.viewed ? 'read' : 'unread'}"
+              on:click={() => (notification.viewed = true)}
+            >
+              <div class="notification-text">{notification.text}</div>
+              <div class="notification-time">{notification.time}</div>
+            </div>
+          {/each}
+        </div>
+      {/if}
     </div>
     <div class="profile">
       <img src="/eminem.jpg" alt="Profile Picture" />
