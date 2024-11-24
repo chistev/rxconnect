@@ -1,21 +1,5 @@
 <script>
-  import ChatDropdown from "$lib/components/feed/ChatDropdown.svelte";
 
-  let showChatDropdown = false;
-  let searchQuery = '';
-
-  // Example mock data for chat feed
-  let chats = [
-    { name: "Beky Aggrey", lastMessage: "Cool", time: "3w", img: "/eminem.jpg" },
-    { name: "Damilola Owolafe", lastMessage: "Hi", time: "3w", img: "/eminem.jpg" },
-    { name: "Fidelity Bank Plc", lastMessage: "Thank you for reaching out...", time: "4w", img: "/eminem.jpg" },
-    { name: "PalmPay Nigeria", lastMessage: "Hello, Stephen Owabie...", time: "5w", img: "/eminem.jpg" },
-    { name: "Kuda App", lastMessage: "Please select one of...", time: "5w", img: "/eminem.jpg" }
-  ];
-
-  function toggleChatDropdown() {
-    showChatDropdown = !showChatDropdown;
-  }
 </script>
 
 <style>
@@ -117,15 +101,6 @@
   </div>
 
   <div class="navbar-right">
-    <div 
-      class="icon" 
-      on:click={toggleChatDropdown}
-    >
-      <i 
-        class="bi bi-chat-dots-fill" 
-        class:active={showChatDropdown} 
-      ></i>
-    </div>
     <div class="icon">
       <i class="bi bi-bell-fill"></i>
     </div>
@@ -134,9 +109,3 @@
     </div>
   </div>
 </div>
-
-<ChatDropdown 
-  {showChatDropdown} 
-  {searchQuery} 
-  {chats} 
-/>
