@@ -10,6 +10,7 @@
 
 <script lang="ts">
   import NotificationItem from "./notificationsdropdown/NotificationItem.svelte";
+	import Tabs from "./notificationsdropdown/Tabs.svelte";
 
   export let notifications: Notification[] = [];
   export let onNotificationClick: (notification: Notification) => void = () => {};
@@ -69,30 +70,7 @@
     justify-content: space-between;
     position: relative;
   }
-
-  .tabs {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #ddd;
-    background: #f0f2f5;
-    padding: 5px 10px;
-  }
-
-  .tab {
-    flex: 1;
-    text-align: center;
-    padding: 8px 0;
-    cursor: pointer;
-    font-size: 14px;
-    color: #555;
-  }
-
-  .tab.active {
-    border-bottom: 2px solid #007bff;
-    font-weight: bold;
-    color: #007bff;
-  }
-
+  
   .more-options {
     font-size: 18px;
     cursor: pointer;
@@ -139,19 +117,8 @@
     {/if}
   </div>
 
-  <!-- Tabs for All and Unread -->
-  <div class="tabs">
-    <div 
-      class="tab {activeTab === 'All' ? 'active' : ''}" 
-      on:click={() => setActiveTab('All')}>
-      All
-    </div>
-    <div 
-      class="tab {activeTab === 'Unread' ? 'active' : ''}" 
-      on:click={() => setActiveTab('Unread')}>
-      Unread
-    </div>
-  </div>
+  <!-- Use the Tabs component -->
+  <Tabs {activeTab} {setActiveTab} />
 
   {#each filteredNotifications() as notification (notification.id)}
     <NotificationItem
