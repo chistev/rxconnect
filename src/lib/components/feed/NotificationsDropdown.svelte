@@ -70,7 +70,7 @@
     justify-content: space-between;
     position: relative;
   }
-  
+
   .more-options {
     font-size: 18px;
     cursor: pointer;
@@ -117,7 +117,6 @@
     {/if}
   </div>
 
-  <!-- Use the Tabs component -->
   <Tabs {activeTab} {setActiveTab} />
 
   {#each filteredNotifications() as notification (notification.id)}
