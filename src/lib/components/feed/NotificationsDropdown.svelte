@@ -11,6 +11,25 @@
 <script lang="ts">
   export let notifications: Notification[] = [];
   export let onNotificationClick: (notification: Notification) => void = () => {};
+  
+  let showMoreOptions = false;
+
+  // Function to mark all notifications as read
+  function markAllAsRead() {
+    notifications = notifications.map((n) => ({ ...n, viewed: true }));
+    showMoreOptions = false; // Close the dropdown
+  }
+
+  // Toggle dropdown menu
+  function toggleMoreOptions(event: MouseEvent) {
+    event.stopPropagation(); // Prevent the event from propagating to parent elements
+    showMoreOptions = !showMoreOptions;
+  }
+
+  // Close the dropdown if clicked outside
+  function closeDropdown() {
+    showMoreOptions = false;
+  }
 </script>
 
 <style>
@@ -37,6 +56,7 @@
     background-color: #f0f2f5;
     border-bottom: 1px solid #ddd;
     justify-content: space-between;
+    position: relative;
   }
 
   .notification-item {
@@ -87,13 +107,48 @@
   .more-options {
     font-size: 18px;
     cursor: pointer;
+    position: relative;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    width: 150px;
+    z-index: 20;
+  }
+
+  .dropdown-menu-item {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .dropdown-menu-item:hover {
+    background-color: #f0f2f5;
   }
 </style>
 
-<div class="notifications-dropdown">
+<!-- Add a click handler to the outer container to close the dropdown -->
+<div class="notifications-dropdown" on:click={closeDropdown}>
   <div class="notifications-header">
     Notifications
-    <i class="bi bi-three-dots more-options" on:click={() => console.log('More options clicked!')}></i>
+    <i
+      class="bi bi-three-dots more-options"
+      on:click={toggleMoreOptions}
+    ></i>
+    {#if showMoreOptions}
+      <div class="dropdown-menu">
+        <div class="dropdown-menu-item" on:click={markAllAsRead}>
+          ✓ Mark all as read
+        </div>
+      </div>
+    {/if}
   </div>
   {#each notifications as notification (notification.id)}
     <div
