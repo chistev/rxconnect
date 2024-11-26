@@ -123,6 +123,7 @@
   .contact-list-container {
     flex: 1;
     max-width: 30%;
+    margin-top: 3%;
   }
 </style>
 
