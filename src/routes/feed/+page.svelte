@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ContactList from "$lib/components/feed/ContactList.svelte";
 	import FeedInput from "$lib/components/feed/FeedInput.svelte";
   import NotificationsAndProfile from "$lib/components/feed/NotificationsAndProfile.svelte";
 
@@ -108,6 +109,21 @@
   .navbar-center .coffee-btn:hover {
     background-color: #145dbf;  
   }
+
+  .feed-container {
+    display: flex;
+    gap: 20px;
+  }
+
+  .feed {
+    flex: 2;
+    max-width: 70%;
+  }
+
+  .contact-list-container {
+    flex: 1;
+    max-width: 30%;
+  }
 </style>
 
 <div class="navbar">
@@ -130,4 +146,12 @@
   />
 </div>
 
-<FeedInput {inputText} bindInputText={(value: string) => { inputText = value; }} />
+<div class="feed-container">
+  <div class="feed">
+    <FeedInput {inputText} bindInputText={(value: string) => { inputText = value; }} />
+  </div>
+
+  <div class="contact-list-container">
+    <ContactList />
+  </div>
+</div>
