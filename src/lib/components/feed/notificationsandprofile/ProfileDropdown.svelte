@@ -1,6 +1,30 @@
 <script lang="ts">
+  import HelpAndSupport from "./profiledropdown/HelpAndSupport.svelte";
+
   export let username: string = "Stephen Owabie";
   export let onLogout: () => void = () => {};
+
+  let showProfileDropdown = true;   
+  let showHelpSupport = false;      
+
+  function toggleHelpSupport() {
+    console.log('Toggling Help & Support');
+    showHelpSupport = !showHelpSupport;
+    console.log('showHelpSupport after toggle:', showHelpSupport);
+  }
+
+  function closeHelpSupport() {
+    console.log('Closing Help & Support');
+    showHelpSupport = false;
+    console.log('showHelpSupport after close:', showHelpSupport);
+  }
+
+  function logout() {
+    console.log('Logging out');
+    onLogout();
+    showProfileDropdown = false;
+    console.log('showProfileDropdown after logout:', showProfileDropdown);
+  }
 </script>
 
 <style>
@@ -42,32 +66,40 @@
   }
 </style>
 
-<div class="profile-dropdown">
-  <div class="profile-dropdown-item">
-    <div class="profile-dropdown-text">
-      <i class="bi bi-person-circle"></i>
-      <strong>{username}</strong>
-    </div>
-  </div>
-  <hr>
-  <div class="profile-dropdown-item">
-    <div class="profile-dropdown-text">
-      <i class="bi bi-question-circle"></i>
-      <span>Help & Support</span>
-    </div>
-    <i class="bi bi-chevron-right"></i>
-  </div>
-  <div class="profile-dropdown-item">
-    <div class="profile-dropdown-text">
-      <i class="bi bi-moon-fill"></i>
-      <span>Display & Accessibility</span>
-    </div>
-    <i class="bi bi-chevron-right"></i>
-  </div>
-  <div class="profile-dropdown-item" on:click={onLogout}>
-    <div class="profile-dropdown-text">
-      <i class="bi bi-box-arrow-right"></i>
-      <span>Log Out</span>
-    </div>
-  </div>
+<div>
+  {#if showProfileDropdown}
+    {#if showHelpSupport}
+      <HelpAndSupport onClose={closeHelpSupport} />
+    {:else}
+      <div class="profile-dropdown">
+        <div class="profile-dropdown-item">
+          <div class="profile-dropdown-text">
+            <i class="bi bi-person-circle"></i>
+            <strong>{username}</strong>
+          </div>
+        </div>
+        <hr>
+        <div class="profile-dropdown-item" on:click={toggleHelpSupport}>
+          <div class="profile-dropdown-text">
+            <i class="bi bi-question-circle"></i>
+            <span>Help & Support</span>
+          </div>
+          <i class="bi bi-chevron-right"></i>
+        </div>
+        <div class="profile-dropdown-item">
+          <div class="profile-dropdown-text">
+            <i class="bi bi-moon-fill"></i>
+            <span>Display & Accessibility</span>
+          </div>
+          <i class="bi bi-chevron-right"></i>
+        </div>
+        <div class="profile-dropdown-item" on:click={logout}>
+          <div class="profile-dropdown-text">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Log Out</span>
+          </div>
+        </div>
+      </div>
+    {/if}
+  {/if}
 </div>
