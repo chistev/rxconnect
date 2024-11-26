@@ -5,7 +5,7 @@
   export let onLogout: () => void = () => {};
 
   let showProfileDropdown = true;   
-  let showHelpSupport = false;      
+  let showHelpSupport = false;
 
   function toggleHelpSupport() {
     console.log('Toggling Help & Support');
@@ -21,9 +21,20 @@
 
   function logout() {
     console.log('Logging out');
-    onLogout();
-    showProfileDropdown = false;
-    console.log('showProfileDropdown after logout:', showProfileDropdown);
+    fetch('/api/logout', { method: 'POST' })
+      .then((response) => {
+        if (response.ok) {
+          console.log('Logged out successfully');
+          onLogout();
+          showProfileDropdown = false;
+          window.location.href = '/login'; 
+        } else {
+          console.log('Logout failed');
+        }
+      })
+      .catch((err) => {
+        console.error('Error logging out:', err);
+      });
   }
 </script>
 
@@ -83,13 +94,6 @@
           <div class="profile-dropdown-text">
             <i class="bi bi-question-circle"></i>
             <span>Help & Support</span>
-          </div>
-          <i class="bi bi-chevron-right"></i>
-        </div>
-        <div class="profile-dropdown-item">
-          <div class="profile-dropdown-text">
-            <i class="bi bi-moon-fill"></i>
-            <span>Display & Accessibility</span>
           </div>
           <i class="bi bi-chevron-right"></i>
         </div>
