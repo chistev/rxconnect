@@ -112,6 +112,7 @@
 
   .feed-container {
     display: flex;
+    flex-wrap: wrap; 
     gap: 20px;
   }
 
@@ -125,7 +126,33 @@
     max-width: 30%;
     margin-top: 3%;
   }
+
+  @media (max-width: 768px) {
+    .feed-container {
+      flex-direction: column;
+      gap: 10px; 
+    }
+
+    .feed {
+      max-width: 100%; 
+    }
+
+    .contact-list-container {
+      max-width: 100%; 
+    }
+  }
+
+  @media (max-width: 480px) {
+    .navbar-left .logo {
+      font-size: 20px; 
+    }
+
+    .navbar-center .coffee-btn {
+      font-size: 12px; 
+    }
+  }
 </style>
+
 
 <div class="navbar">
   <div class="navbar-left">
