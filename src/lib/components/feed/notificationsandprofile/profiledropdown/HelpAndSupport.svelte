@@ -3,7 +3,7 @@
   
     console.log('HelpAndSupport component loaded');
   </script>
-    
+  
   <style>
     .help-support-menu {
       position: absolute;
@@ -35,17 +35,18 @@
       color: #606770;
     }
   </style>
-    
+  
   <div class="help-support-menu">
     <div class="menu-item" on:click={() => { 
-      console.log('Back arrow clicked');
       onClose(); 
     }}>
       <i class="bi bi-arrow-left"></i>
       <strong>Help & Support</strong>
     </div>
     <hr>
-    <div class="menu-item">
+    <div class="menu-item" on:click={() => { 
+      window.location.href = 'mailto:chistev12@gmail.com';
+    }}>
       <i class="bi bi-envelope"></i>
       <span>Support Inbox</span>
     </div>
