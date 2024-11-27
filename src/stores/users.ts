@@ -5,7 +5,6 @@ export interface User {
   firstName: string;
   surname: string;
   profilePic: string;
-  // online: boolean;
 }
 
 export const users = writable<User[]>([]);

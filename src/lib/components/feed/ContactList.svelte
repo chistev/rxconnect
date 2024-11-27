@@ -42,22 +42,6 @@
     font-size: 14px;
     font-weight: 500;
   }
-
-  .contact .online {
-    width: 10px;
-    height: 10px;
-    background-color: #44b700;
-    border-radius: 50%;
-    margin-left: auto;
-  }
-
-  .contact .offline {
-    width: 10px;
-    height: 10px;
-    background-color: #ccc;
-    border-radius: 50%;
-    margin-left: auto;
-  }
 </style>
 
 <div class="contact-list">
@@ -66,7 +50,6 @@
     <div class="contact">
       <img src={user.profilePic} alt={user.firstName} />
       <div class="name">{user.firstName} {user.surname}</div>
-      <!-- <div class={user.online ? "online" : "offline"}></div> -->
     </div>
   {/each}
 </div>
