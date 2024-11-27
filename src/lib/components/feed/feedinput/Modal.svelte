@@ -22,54 +22,119 @@
     .modal-content {
       background: white;
       border-radius: 10px;
-      max-width: 600px;
-      width: 100%;
-      padding: 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      width: 90%;
+      padding: 15px 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
   
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
       margin-bottom: 15px;
     }
   
     .modal-header h2 {
+      font-size: 16px;
+      font-weight: 600;
       margin: 0;
-      font-size: 18px;
     }
   
     .modal-header button {
       background: none;
       border: none;
-      font-size: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
       cursor: pointer;
     }
   
     .modal-body {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      gap: 15px;
     }
   
-    .modal-body img {
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  
+    .user-info img {
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      margin-right: 10px;
     }
   
-    .modal-body input {
-      flex: 1;
-      border: 1px solid #ddd;
-      outline: none;
-      border-radius: 20px;
-      padding: 10px;
+    .user-info .placeholder {
       font-size: 14px;
+      font-weight: 500;
+      color: #555;
     }
   
-    .modal-body input:focus {
+    .post-input {
+      border: none;
+      outline: none;
+      resize: none;
+      width: 100%;
+      font-size: 16px;
+      color: #333;
+      height: 80px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+  
+    .post-input:focus {
       border-color: #1877f2;
+      background-color: #fff;
+    }
+  
+    .post-options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+  
+    .post-options button {
+      background: none;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #555;
+    }
+  
+    .post-options button:hover {
+      color: #1877f2;
+    }
+  
+    .post-options .bi {
+      font-size: 18px;
+    }
+  
+    .post-button {
+      background-color: #1877f2;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-left: auto;
+    }
+  
+    .post-button:disabled {
+      background-color: #ddd;
+      cursor: not-allowed;
     }
   </style>
   
@@ -79,14 +144,40 @@
         <h2>Create Post</h2>
         <button on:click={closeModal}>&times;</button>
       </div>
+  
       <div class="modal-body">
-        <img src={loggedInUserProfilePic} alt="Profile Picture" />
-        <input
-          type="text"
-          placeholder="What's on your mind?"
+        <div class="user-info">
+          <img src={loggedInUserProfilePic} alt="User Profile" />
+          <span class="placeholder">What's on your mind, Stephen?</span>
+        </div>
+  
+        <textarea
+          class="post-input"
+          placeholder="Write something here..."
           bind:value={inputText}
-        />
+        ></textarea>
+  
+        <div class="post-options">
+          <button>
+            <i class="bi bi-image"></i>
+            Photo/Video
+          </button>
+          <button>
+            <i class="bi bi-person-plus"></i>
+            Tag Friends
+          </button>
+          <button>
+            <i class="bi bi-geo-alt"></i>
+            Check-in
+          </button>
+          <button>
+            <i class="bi bi-emoji-smile"></i>
+            Feeling/Activity
+          </button>
+        </div>
       </div>
+  
+      <button class="post-button" disabled={!inputText}>Post</button>
     </div>
   </div>
   
