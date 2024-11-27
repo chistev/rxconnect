@@ -1,12 +1,15 @@
 <script lang="ts">
   import { createEventDispatcher, onMount, onDestroy } from "svelte";
   import NotificationsDropdown from "$lib/components/feed/NotificationsDropdown.svelte";
-	import ProfileDropdown from "./notificationsandprofile/ProfileDropdown.svelte";
+  import ProfileDropdown from "./notificationsandprofile/ProfileDropdown.svelte";
+  import { users, userId } from "../../../stores/users"; 
+  import { writable } from "svelte/store";
+  import type { User } from "../../../stores/users"; 
 
   export let notifications: { id: number; text: string; time: string; viewed: boolean; profilePic: string }[] = [];
   export let showNotifications: boolean = false;
   export let handleNotificationClick: (notification: any) => void = () => {};
-  
+
   const dispatch = createEventDispatcher();
   
   const toggleNotifications = () => {
@@ -14,6 +17,8 @@
   };
 
   let showProfileDropdown: boolean = false;
+
+  let loggedInUser = writable<User | null>(null); 
 
   const toggleProfileDropdown = () => {
     showProfileDropdown = !showProfileDropdown;
@@ -34,7 +39,30 @@
     }
   };
 
+  let userIdValue: string | null = null;  
+  let usersList: User[] = []; 
+
   onMount(() => {
+    const unsubscribeUserId = userId.subscribe((id) => {
+      userIdValue = id;  
+    });
+
+    const unsubscribeUsers = users.subscribe((usersData) => {
+      usersList = usersData;  
+    });
+
+    if (userIdValue) {
+      const user = usersList.find(u => u._id === userIdValue);
+      if (user) {
+        loggedInUser.set(user);
+      }
+    }
+
+    onDestroy(() => {
+      unsubscribeUserId();
+      unsubscribeUsers();
+    });
+
     document.addEventListener("click", handleClickOutside);
   });
 
@@ -42,6 +70,7 @@
     document.removeEventListener("click", handleClickOutside);
   });
 </script>
+
 
 <style>
   .navbar-right {
@@ -96,10 +125,12 @@
   </div>
 
   <div class="profile" on:click={toggleProfileDropdown}>
-    <img src="/eminem.jpg" alt="Profile Picture" />
+    {#if $loggedInUser}
+      <img src="{$loggedInUser.profilePic}" alt="Profile Picture" />
+    {/if}
   </div>
 
-  {#if showProfileDropdown}
-    <ProfileDropdown username="Stephen Owabie" onLogout={handleLogout} />
+  {#if showProfileDropdown && $loggedInUser}
+    <ProfileDropdown username="{$loggedInUser.firstName} {$loggedInUser.surname}" onLogout={handleLogout} />
   {/if}
 </div>

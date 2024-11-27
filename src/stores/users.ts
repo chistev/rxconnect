@@ -8,3 +8,4 @@ export interface User {
 }
 
 export const users = writable<User[]>([]);
+export const userId = writable<string | null>(null); 

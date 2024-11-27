@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-import { users } from '../../stores/users';
+import { users, userId } from '../../stores/users';
 
 export async function load({ fetch }) {
     try {
@@ -13,7 +13,9 @@ export async function load({ fetch }) {
 
         if (response.ok) {
             const data = await response.json();
-            const userId = data.userId;
+            const userIdValue = data.userId;
+
+            userId.set(userIdValue); 
 
             const usersResponse = await fetch('/api/users');
 
@@ -21,11 +23,11 @@ export async function load({ fetch }) {
                 const usersData = await usersResponse.json();
                 users.set(usersData); 
 
-                return { userId, users: usersData };
+                return { userId: userIdValue, users: usersData };
             } else {
                 console.error('Failed to fetch users');
                 users.set([]);
-                return { userId, users: [] };
+                return { userId: userIdValue, users: [] };
             }
         } else {
             throw new Error('Unauthorized');
