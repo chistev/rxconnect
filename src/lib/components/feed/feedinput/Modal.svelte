@@ -4,8 +4,33 @@
   export let inputText: string;
   export let bindInputText: (value: string) => void;
   export let closeModal: () => void;
-</script>
   
+  // Store for selected files
+  let selectedFiles: File[] = [];
+  
+  // Ref for the file input element
+  let fileInput: HTMLInputElement;
+
+  // Handle file selection
+  const handleFileChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      // Append newly selected files to the selectedFiles array
+      selectedFiles = [...selectedFiles, ...Array.from(input.files)];
+    }
+  };
+
+  // Remove file from selectedFiles
+  const removeFile = (index: number) => {
+    selectedFiles = selectedFiles.filter((_, i) => i !== index);
+  };
+
+  // Trigger file input click on button click
+  const triggerFileInput = () => {
+    fileInput.click();
+  };
+</script>
+
 <style>
   .modal {
     position: fixed;
@@ -137,8 +162,44 @@
     background-color: #ddd;
     cursor: not-allowed;
   }
+
+  /* Style for file thumbnails */
+  .file-thumbnails {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .file-thumbnail {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+  }
+
+  .file-thumbnail img,
+  .file-thumbnail video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .remove-file {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 14px;
+  }
 </style>
-  
+
 <div class="modal" on:click={closeModal}>
   <div class="modal-content" on:click|stopPropagation>
     <div class="modal-header">
@@ -159,7 +220,7 @@
       ></textarea>
 
       <div class="post-options">
-        <button>
+        <button on:click={triggerFileInput}>
           <i class="bi bi-image"></i>
           Photo/Video
         </button>
@@ -176,6 +237,32 @@
           Feeling/Activity
         </button>
       </div>
+
+      <!-- File Thumbnails -->
+      {#if selectedFiles.length > 0}
+        <div class="file-thumbnails">
+          {#each selectedFiles as file, index}
+            <div class="file-thumbnail">
+              {#if file.type.startsWith('image')}
+                <img src={URL.createObjectURL(file)} alt="thumbnail" />
+              {:else if file.type.startsWith('video')}
+                <video src={URL.createObjectURL(file)} autoplay loop muted />
+              {/if}
+              <button class="remove-file" on:click={() => removeFile(index)}>×</button>
+            </div>
+          {/each}
+        </div>
+      {/if}
+      
+      <!-- Hidden File Input -->
+      <input
+        type="file"
+        accept="image/*,video/*"
+        multiple
+        on:change={handleFileChange}
+        style="display: none"
+        bind:this={fileInput}
+      />
     </div>
 
     <button class="post-button" disabled={!inputText}>Post</button>
