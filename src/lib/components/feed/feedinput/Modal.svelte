@@ -1,5 +1,6 @@
 <script lang="ts">
 	import FileThumbnails from "./modal/FileThumbnails.svelte";
+  import TagFriendsModal from "./modal/TagFriendsModal.svelte";
 
   export let loggedInUserProfilePic: string = '';
   export let loggedInUserFirstName: string = '';
@@ -12,6 +13,8 @@
   
   // Ref for the file input element
   let fileInput: HTMLInputElement;
+
+  let isTagModalVisible = false;
 
   // Handle file selection
   const handleFileChange = (event: Event) => {
@@ -176,7 +179,7 @@
     <div class="modal-body">
       <div class="user-info">
         <img src={loggedInUserProfilePic} alt="User Profile" />
-        <span class="placeholder">What's on your mind, {loggedInUserFirstName}?</span>  <!-- This now uses dynamic first name -->
+        <span class="placeholder">What's on your mind, {loggedInUserFirstName}?</span>
       </div>
 
       <textarea
@@ -190,7 +193,7 @@
           <i class="bi bi-image"></i>
           Photo/Video
         </button>
-        <button>
+        <button on:click={() => (isTagModalVisible = true)}>
           <i class="bi bi-person-plus"></i>
           Tag Friends
         </button>
@@ -205,8 +208,7 @@
       </div>
 
       <FileThumbnails selectedFiles={selectedFiles} removeFile={removeFile} />
-      
-      <!-- Hidden File Input -->
+
       <input
         type="file"
         accept="image/*,video/*"
@@ -219,4 +221,7 @@
 
     <button class="post-button" disabled={!inputText && selectedFiles.length === 0}>Post</button>
   </div>
+  {#if isTagModalVisible}
+    <TagFriendsModal closeTagModal={() => (isTagModalVisible = false)} />
+  {/if}
 </div>
