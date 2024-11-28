@@ -1,5 +1,5 @@
 <script lang="ts">
-	import FileThumbnails from "./modal/FileThumbnails.svelte";
+  import FileThumbnails from "./modal/FileThumbnails.svelte";
   import TagFriendsModal from "./modal/TagFriendsModal.svelte";
 
   export let loggedInUserProfilePic: string = '';
@@ -7,32 +7,32 @@
   export let inputText: string;
   export let bindInputText: (value: string) => void;
   export let closeModal: () => void;
-  
-  // Store for selected files
-  let selectedFiles: File[] = [];
-  
-  // Ref for the file input element
-  let fileInput: HTMLInputElement;
 
+  let selectedFiles: File[] = [];
+  let taggedFriends: any[] = [];  // Store tagged friends here
+
+  let fileInput: HTMLInputElement;
   let isTagModalVisible = false;
 
-  // Handle file selection
   const handleFileChange = (event: Event) => {
     const input = event.target as HTMLInputElement;
     if (input.files) {
-      // Append newly selected files to the selectedFiles array
       selectedFiles = [...selectedFiles, ...Array.from(input.files)];
     }
   };
 
-  // Remove file from selectedFiles
   const removeFile = (index: number) => {
     selectedFiles = selectedFiles.filter((_, i) => i !== index);
   };
 
-  // Trigger file input click on button click
   const triggerFileInput = () => {
     fileInput.click();
+  };
+
+  // This function will update the tagged friends in Modal.svelte
+  const updateTaggedFriends = (friends: any[]) => {
+    taggedFriends = friends;
+    isTagModalVisible = false;  // Close the tag modal
   };
 </script>
 
@@ -209,6 +209,17 @@
 
       <FileThumbnails selectedFiles={selectedFiles} removeFile={removeFile} />
 
+      {#if taggedFriends.length > 0}
+        <div class="tagged-friends">
+          {#each taggedFriends as friend}
+            <div class="friend-thumbnail">
+              <img src={friend.profilePic} alt="Friend" />
+              <span>{friend.firstName} {friend.surname}</span>
+            </div>
+          {/each}
+        </div>
+      {/if}
+
       <input
         type="file"
         accept="image/*,video/*"
@@ -222,6 +233,9 @@
     <button class="post-button" disabled={!inputText && selectedFiles.length === 0}>Post</button>
   </div>
   {#if isTagModalVisible}
-    <TagFriendsModal closeTagModal={() => (isTagModalVisible = false)} />
+    <TagFriendsModal 
+      closeTagModal={() => (isTagModalVisible = false)} 
+      updateTaggedFriends={updateTaggedFriends} 
+    />
   {/if}
 </div>
