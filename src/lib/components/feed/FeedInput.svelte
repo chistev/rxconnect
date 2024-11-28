@@ -7,6 +7,7 @@
   export let bindInputText: (value: string) => void;
 
   let loggedInUserProfilePic: string = '';
+  let loggedInUserFirstName: string = '';  // Added first name
   let showModal: boolean = false;
 
   onMount(() => {
@@ -16,6 +17,7 @@
           const user = usersData.find((u) => u._id === id);
           if (user) {
             loggedInUserProfilePic = user.profilePic;
+            loggedInUserFirstName = user.firstName;  // Set the first name correctly
           }
         });
 
@@ -126,6 +128,7 @@
   {#if showModal}
     <Modal
       loggedInUserProfilePic={loggedInUserProfilePic}
+      loggedInUserFirstName={loggedInUserFirstName}  
       inputText={inputText}
       bindInputText={bindInputText}
       closeModal={closeModal}
