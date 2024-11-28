@@ -1,15 +1,18 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+    import { onMount } from 'svelte';
     import { users, userId } from '../../../../../stores/users';
+    import type { User } from '../../../../../stores/users';
 
     export let closeTagModal: () => void;
 
     let searchQuery = "";
     let loggedInUserId: string | null = null;
 
+    let taggedFriends: User[] = [];
+
     onMount(() => {
         const unsubscribe = userId.subscribe((id: string | null) => {
-            loggedInUserId = id; 
+            loggedInUserId = id;
         });
 
         return () => {
@@ -17,11 +20,22 @@
         };
     });
 
-    $: filteredFriends = $users.filter(user =>
-        user._id !== loggedInUserId && 
-        `${user.firstName} ${user.surname}`.toLowerCase().includes(searchQuery.toLowerCase())
+    $: filteredFriends = $users.filter(
+        (user: User) =>
+            user._id !== loggedInUserId &&
+            !taggedFriends.some((tagged) => tagged._id === user._id) &&
+            `${user.firstName} ${user.surname}`.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    function tagFriend(friend: User) {
+        taggedFriends = [...taggedFriends, friend];
+    }
+
+    function untagFriend(friend: User) {
+        taggedFriends = taggedFriends.filter((tagged) => tagged._id !== friend._id);
+    }
 </script>
+
 
 <style>
     .tag-modal {
@@ -117,6 +131,32 @@
     .friend-item span {
         font-size: 14px;
     }
+
+    .tagged-friends {
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tagged-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #e9ecef;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+.tagged-item button {
+    background: none;
+    border: none;
+    color: #ff0000;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 </style>
 
 <div class="tag-modal" on:click={closeTagModal}>
@@ -125,6 +165,7 @@
             <h2>Tag People</h2>
             <button on:click={closeTagModal}>&times;</button>
         </div>
+
         <div class="search-done-container">
             <input
                 type="text"
@@ -134,9 +175,19 @@
             />
             <button class="done-button" on:click={closeTagModal}>Done</button>
         </div>
+
+        <div class="tagged-friends">
+            {#each taggedFriends as friend (friend._id)}
+                <div class="tagged-item">
+                    <span>{friend.firstName} {friend.surname}</span>
+                    <button on:click={() => untagFriend(friend)}>×</button>
+                </div>
+            {/each}
+        </div>
+
         <div class="friends-list">
-            {#each filteredFriends as friend}
-                <div class="friend-item">
+            {#each filteredFriends as friend (friend._id)}
+                <div class="friend-item" on:click={() => tagFriend(friend)}>
                     <img src={friend.profilePic} alt="Friend" />
                     <span>{friend.firstName} {friend.surname}</span>
                 </div>
