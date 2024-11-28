@@ -1,11 +1,24 @@
 <script lang="ts">
-    import { users } from '../../../../../stores/users';
+	import { onMount } from 'svelte';
+    import { users, userId } from '../../../../../stores/users';
 
     export let closeTagModal: () => void;
 
     let searchQuery = "";
+    let loggedInUserId: string | null = null;
+
+    onMount(() => {
+        const unsubscribe = userId.subscribe((id: string | null) => {
+            loggedInUserId = id; 
+        });
+
+        return () => {
+            unsubscribe();
+        };
+    });
 
     $: filteredFriends = $users.filter(user =>
+        user._id !== loggedInUserId && 
         `${user.firstName} ${user.surname}`.toLowerCase().includes(searchQuery.toLowerCase())
     );
 </script>
