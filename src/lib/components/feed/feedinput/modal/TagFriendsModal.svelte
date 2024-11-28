@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import { users, userId } from '../../../../../stores/users';
     import type { User } from '../../../../../stores/users';
+	import FriendItem from './tagfriendsmodal/FriendItem.svelte';
 
     export let closeTagModal: () => void;
 
@@ -108,30 +109,6 @@
         gap: 10px;
     }
 
-    .friend-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        cursor: pointer;
-        padding: 10px;
-        border-radius: 8px;
-        transition: background 0.2s;
-    }
-
-    .friend-item:hover {
-        background-color: #f0f0f0;
-    }
-
-    .friend-item img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
-
-    .friend-item span {
-        font-size: 14px;
-    }
-
     .tagged-friends {
     margin-bottom: 15px;
     display: flex;
@@ -187,10 +164,7 @@
 
         <div class="friends-list">
             {#each filteredFriends as friend (friend._id)}
-                <div class="friend-item" on:click={() => tagFriend(friend)}>
-                    <img src={friend.profilePic} alt="Friend" />
-                    <span>{friend.firstName} {friend.surname}</span>
-                </div>
+            <FriendItem {friend} onTag={() => tagFriend(friend)} />
             {/each}
         </div>
     </div>
