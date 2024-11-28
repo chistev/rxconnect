@@ -217,6 +217,6 @@
       />
     </div>
 
-    <button class="post-button" disabled={!inputText}>Post</button>
+    <button class="post-button" disabled={!inputText && selectedFiles.length === 0}>Post</button>
   </div>
 </div>
