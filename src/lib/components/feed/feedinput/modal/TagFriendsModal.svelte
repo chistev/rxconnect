@@ -3,6 +3,7 @@
     import { users, userId } from '../../../../../stores/users';
     import type { User } from '../../../../../stores/users';
 	import FriendItem from './tagfriendsmodal/FriendItem.svelte';
+	import TaggedFriendItem from './tagfriendsmodal/TaggedFriendItem.svelte';
 
     export let closeTagModal: () => void;
 
@@ -36,7 +37,6 @@
         taggedFriends = taggedFriends.filter((tagged) => tagged._id !== friend._id);
     }
 </script>
-
 
 <style>
     .tag-modal {
@@ -115,25 +115,6 @@
     flex-wrap: wrap;
     gap: 10px;
 }
-
-.tagged-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    background-color: #e9ecef;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 14px;
-}
-
-.tagged-item button {
-    background: none;
-    border: none;
-    color: #ff0000;
-    cursor: pointer;
-    font-weight: bold;
-}
-
 </style>
 
 <div class="tag-modal" on:click={closeTagModal}>
@@ -155,10 +136,7 @@
 
         <div class="tagged-friends">
             {#each taggedFriends as friend (friend._id)}
-                <div class="tagged-item">
-                    <span>{friend.firstName} {friend.surname}</span>
-                    <button on:click={() => untagFriend(friend)}>×</button>
-                </div>
+            <TaggedFriendItem {friend} untag={() => untagFriend(friend)} /> 
             {/each}
         </div>
 
