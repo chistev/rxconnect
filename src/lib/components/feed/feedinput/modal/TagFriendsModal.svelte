@@ -1,18 +1,12 @@
 <script lang="ts">
-    export let closeTagModal: () => void;
+    import { users } from '../../../../../stores/users';
 
-    let friends = [
-        { name: "Nmeri Alphonsus", profilePic: "/eminem.jpg" },
-        { name: "Chukwuemeka Okocha", profilePic: "/eminem.jpg" },
-        { name: "Les Luka", profilePic: "/eminem.jpg" },
-        { name: "Fortune Aguma", profilePic: "/eminem.jpg" },
-        { name: "Anthony Faber", profilePic: "/eminem.jpg" },
-    ];
+    export let closeTagModal: () => void;
 
     let searchQuery = "";
 
-    $: filteredFriends = friends.filter(friend =>
-        friend.name.toLowerCase().includes(searchQuery.toLowerCase())
+    $: filteredFriends = $users.filter(user =>
+        `${user.firstName} ${user.surname}`.toLowerCase().includes(searchQuery.toLowerCase())
     );
 </script>
 
@@ -131,7 +125,7 @@
             {#each filteredFriends as friend}
                 <div class="friend-item">
                     <img src={friend.profilePic} alt="Friend" />
-                    <span>{friend.name}</span>
+                    <span>{friend.firstName} {friend.surname}</span>
                 </div>
             {/each}
         </div>
