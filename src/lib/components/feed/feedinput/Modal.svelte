@@ -167,6 +167,19 @@
     background-color: #ddd;
     cursor: not-allowed;
   }
+
+  .friend-thumbnail {
+    display: flex;
+    align-items: center;
+  }
+
+  .friend-thumbnail img {
+  width: 40px; 
+  height: 40px;
+  border-radius: 50%; 
+  object-fit: cover; 
+  margin-right: 8px;
+}
 </style>
 
 <div class="modal" on:click={closeModal}>
