@@ -1,6 +1,7 @@
 <script lang="ts">
   import FileThumbnails from "./modal/FileThumbnails.svelte";
   import TagFriendsModal from "./modal/TagFriendsModal.svelte";
+	import TaggedFriendsList from "./modal/TaggedFriendsList.svelte";
 
   export let loggedInUserProfilePic: string = '';
   export let loggedInUserFirstName: string = '';
@@ -9,7 +10,7 @@
   export let closeModal: () => void;
 
   let selectedFiles: File[] = [];
-  let taggedFriends: any[] = [];  // Store tagged friends here
+  let taggedFriends: any[] = [];
 
   let fileInput: HTMLInputElement;
   let isTagModalVisible = false;
@@ -29,13 +30,11 @@
     fileInput.click();
   };
 
-  // This function will update the tagged friends in Modal.svelte
   const updateTaggedFriends = (friends: any[]) => {
     taggedFriends = friends;
-    isTagModalVisible = false;  // Close the tag modal
+    isTagModalVisible = false; 
   };
 
-  // Function to remove a tagged friend
   const untagFriend = (friend: any) => {
     taggedFriends = taggedFriends.filter(tagged => tagged._id !== friend._id);
   };
@@ -172,29 +171,6 @@
     background-color: #ddd;
     cursor: not-allowed;
   }
-
-  .friend-thumbnail {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-    gap: 10px;
-  }
-
-  .friend-thumbnail img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  .friend-thumbnail .remove-button {
-    background: none;
-    border: none;
-    color: red;
-    cursor: pointer;
-    font-size: 14px;
-    margin-left: 10px;
-  }
 </style>
 
 <div class="modal" on:click={closeModal}>
@@ -237,17 +213,9 @@
 
       <FileThumbnails selectedFiles={selectedFiles} removeFile={removeFile} />
 
-      {#if taggedFriends.length > 0}
-        <div class="tagged-friends">
-          {#each taggedFriends as friend (friend._id)}
-            <div class="friend-thumbnail">
-              <img src={friend.profilePic} alt="Friend" />
-              <span>{friend.firstName} {friend.surname}</span>
-              <button class="remove-button" on:click={() => untagFriend(friend)}>×</button>
-            </div>
-          {/each}
-        </div>
-      {/if}
+      <TaggedFriendsList taggedFriends={taggedFriends} 
+      untagFriend={untagFriend} 
+    />
 
       <input
         type="file"
