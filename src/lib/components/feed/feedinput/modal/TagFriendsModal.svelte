@@ -1,48 +1,79 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-    import { users, userId } from '../../../../../stores/users';
-    import type { User } from '../../../../../stores/users';
-    import FriendItem from './tagfriendsmodal/FriendItem.svelte';
-    import TaggedFriendItem from './tagfriendsmodal/TaggedFriendItem.svelte';
-  
-    export let closeTagModal: () => void;
-    export let updateTaggedFriends: (friends: User[]) => void;  // New prop to pass tagged friends back
-  
-    let searchQuery = "";
-    let loggedInUserId: string | null = null;
-    let taggedFriends: User[] = [];
-  
-    onMount(() => {
-      const unsubscribe = userId.subscribe((id: string | null) => {
-        loggedInUserId = id;
-      });
-  
-      return () => {
-        unsubscribe();
-      };
+  import { onMount } from "svelte";
+  import { users, userId } from "../../../../../stores/users";
+  import type { User } from "../../../../../stores/users";
+  import FriendItem from "./tagfriendsmodal/FriendItem.svelte";
+  import TaggedFriendItem from "./tagfriendsmodal/TaggedFriendItem.svelte";
+
+  export let closeTagModal: () => void;
+  export let updateTaggedFriends: (friends: User[]) => void;
+  export let currentTaggedFriends: User[] = [];
+
+  let searchQuery = "";
+  let loggedInUserId: string | null = null;
+  let taggedFriends: User[] = currentTaggedFriends;
+
+  onMount(() => {
+    const unsubscribe = userId.subscribe((id: string | null) => {
+      loggedInUserId = id;
     });
-  
-    $: filteredFriends = $users.filter(
-      (user: User) =>
-        user._id !== loggedInUserId &&
-        !taggedFriends.some((tagged) => tagged._id === user._id) &&
-        `${user.firstName} ${user.surname}`.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  
-    function tagFriend(friend: User) {
-      taggedFriends = [...taggedFriends, friend];
-    }
-  
-    function untagFriend(friend: User) {
-      taggedFriends = taggedFriends.filter((tagged) => tagged._id !== friend._id);
-    }
-  
-    // When 'Done' is clicked, update parent component and close the modal
-    function handleDone() {
-      updateTaggedFriends(taggedFriends);
-      closeTagModal();
-    }
-  </script>
+
+    return () => {
+      unsubscribe();
+    };
+  });
+
+  $: filteredFriends = $users.filter(
+    (user: User) =>
+      user._id !== loggedInUserId &&
+      !taggedFriends.some((tagged) => tagged._id === user._id) &&
+      `${user.firstName} ${user.surname}`.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  function tagFriend(friend: User) {
+    taggedFriends = [...taggedFriends, friend];
+  }
+
+  function untagFriend(friend: User) {
+    taggedFriends = taggedFriends.filter((tagged) => tagged._id !== friend._id);
+  }
+
+  function handleDone() {
+    updateTaggedFriends(taggedFriends);
+    closeTagModal();
+  }
+</script>
+
+<div class="tag-modal" on:click={closeTagModal}>
+  <div class="tag-modal-content" on:click|stopPropagation>
+    <div class="modal-header">
+      <h2>Tag People</h2>
+      <button on:click={closeTagModal}>&times;</button>
+    </div>
+
+    <div class="search-done-container">
+      <input
+        type="text"
+        class="search-bar"
+        placeholder="Search"
+        bind:value={searchQuery}
+      />
+      <button class="done-button" on:click={handleDone}>Done</button>
+    </div>
+
+    <div class="tagged-friends">
+      {#each taggedFriends as friend (friend._id)}
+        <TaggedFriendItem {friend} untag={() => untagFriend(friend)} />
+      {/each}
+    </div>
+
+    <div class="friends-list">
+      {#each filteredFriends as friend (friend._id)}
+        <FriendItem {friend} onTag={() => tagFriend(friend)} />
+      {/each}
+    </div>
+  </div>
+</div>
 
 <style>
     .tag-modal {
@@ -122,34 +153,3 @@
     gap: 10px;
 }
 </style>
-
-<div class="tag-modal" on:click={closeTagModal}>
-    <div class="tag-modal-content" on:click|stopPropagation>
-      <div class="modal-header">
-        <h2>Tag People</h2>
-        <button on:click={closeTagModal}>&times;</button>
-      </div>
-  
-      <div class="search-done-container">
-        <input
-          type="text"
-          class="search-bar"
-          placeholder="Search"
-          bind:value={searchQuery}
-        />
-        <button class="done-button" on:click={handleDone}>Done</button>
-      </div>
-  
-      <div class="tagged-friends">
-        {#each taggedFriends as friend (friend._id)}
-          <TaggedFriendItem {friend} untag={() => untagFriend(friend)} />
-        {/each}
-      </div>
-  
-      <div class="friends-list">
-        {#each filteredFriends as friend (friend._id)}
-          <FriendItem {friend} onTag={() => tagFriend(friend)} />
-        {/each}
-      </div>
-    </div>
-  </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import FileThumbnails from "./modal/FileThumbnails.svelte";
   import TagFriendsModal from "./modal/TagFriendsModal.svelte";
-	import TaggedFriendsList from "./modal/TaggedFriendsList.svelte";
+  import TaggedFriendsList from "./modal/TaggedFriendsList.svelte";
 
   export let loggedInUserProfilePic: string = '';
   export let loggedInUserFirstName: string = '';
@@ -173,6 +173,7 @@
   }
 </style>
 
+<!-- Modal template -->
 <div class="modal" on:click={closeModal}>
   <div class="modal-content" on:click|stopPropagation>
     <div class="modal-header">
@@ -214,8 +215,8 @@
       <FileThumbnails selectedFiles={selectedFiles} removeFile={removeFile} />
 
       <TaggedFriendsList taggedFriends={taggedFriends} 
-      untagFriend={untagFriend} 
-    />
+        untagFriend={untagFriend} 
+      />
 
       <input
         type="file"
@@ -229,10 +230,12 @@
 
     <button class="post-button" disabled={!inputText && selectedFiles.length === 0}>Post</button>
   </div>
+
   {#if isTagModalVisible}
     <TagFriendsModal 
       closeTagModal={() => (isTagModalVisible = false)} 
-      updateTaggedFriends={updateTaggedFriends} 
+      updateTaggedFriends={updateTaggedFriends}
+      currentTaggedFriends={taggedFriends}
     />
   {/if}
 </div>
