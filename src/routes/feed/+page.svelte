@@ -83,6 +83,57 @@
     margin-top: 3%;
   }
 
+  .post-header {
+  max-width: 600px; /* Match FeedInput */
+  margin: 10px auto; /* Spacing below FeedInput */
+  background-color: white;
+  padding: 10px 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-header .profile {
+  display: flex;
+  align-items: center;
+}
+
+.post-header .profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.post-header .profile .details {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-header .profile .details .name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.post-header .profile .details .timestamp {
+  font-size: 12px;
+  color: #555;
+}
+
+.post-header .actions {
+  display: flex;
+  gap: 10px;
+  font-size: 20px;
+  color: #555;
+  cursor: pointer;
+}
+
+.post-header .actions i:hover {
+  color: #1877f2;
+}
+
   @media (max-width: 768px) {
     .feed-container {
       flex-direction: column;
@@ -133,7 +184,22 @@
 <div class="feed-container">
   <div class="feed">
     <FeedInput {inputText} bindInputText={(value: string) => { inputText = value; }} />
+  
+    <div class="post-header">
+      <div class="profile">
+        <img src="/eminem.jpg" alt="Profile Picture" />
+        <div class="details">
+          <span class="name">Clarissa Doll</span>
+          <span class="timestamp">November 27 at 8:59 AM · <i class="bi bi-globe"></i></span>
+        </div>
+      </div>
+      <div class="actions">
+        <i class="bi bi-three-dots"></i>
+        <i class="bi bi-x"></i>
+      </div>
+    </div>
   </div>
+  
 
   <div class="contact-list-container">
     <ContactList />

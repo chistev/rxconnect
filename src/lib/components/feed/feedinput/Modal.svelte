@@ -171,15 +171,21 @@
     background-color: #ddd;
     cursor: not-allowed;
   }
+
+  .custom-close-icon {
+  font-size: 24px;
+}
+
 </style>
 
-<!-- Modal template -->
 <div class="modal" on:click={closeModal}>
   <div class="modal-content" on:click|stopPropagation>
     <div class="modal-header">
       <h2>Create Post</h2>
-      <button on:click={closeModal}>&times;</button>
-    </div>
+      <button on:click={closeModal}>
+        <i class="bi bi-x custom-close-icon"></i>
+      </button>
+    </div>    
 
     <div class="modal-body">
       <div class="user-info">
@@ -201,14 +207,6 @@
         <button on:click={() => (isTagModalVisible = true)}>
           <i class="bi bi-person-plus"></i>
           Tag Friends
-        </button>
-        <button>
-          <i class="bi bi-geo-alt"></i>
-          Check-in
-        </button>
-        <button>
-          <i class="bi bi-emoji-smile"></i>
-          Feeling/Activity
         </button>
       </div>
 
