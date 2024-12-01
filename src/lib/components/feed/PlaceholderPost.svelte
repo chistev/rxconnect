@@ -2,24 +2,24 @@
   export let profileImage: string;
   export let profileName: string;
   export let timestamp: string;
+  export let postText: string;
 </script>
 
 <style>
   .post-header {
-    max-width: 600px;
-    margin: 10px auto;
-    background-color: white;
-    padding: 10px 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  max-width: 600px;
+  margin: 10px auto;
+  background-color: white;
+  padding: 10px 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative; 
+}
 
   .profile {
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
   }
 
   .profile img {
@@ -44,13 +44,24 @@
     color: #555;
   }
 
-  .actions {
-    display: flex;
-    gap: 10px;
-    font-size: 20px;
-    color: #555;
-    cursor: pointer;
+  .post-text {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+    margin-top: 10px;
+    white-space: pre-wrap;
   }
+
+  .actions {
+  position: absolute; 
+  top: 10px; 
+  right: 15px; 
+  display: flex;
+  gap: 10px;
+  font-size: 20px;
+  color: #555;
+  cursor: pointer;
+}
 
   .actions i:hover {
     color: #1877f2;
@@ -64,6 +75,9 @@
       <span class="name">{profileName}</span>
       <span class="timestamp">{timestamp} · <i class="bi bi-globe"></i></span>
     </div>
+  </div>
+  <div class="post-text">
+    {postText}
   </div>
   <div class="actions">
     <i class="bi bi-three-dots"></i>

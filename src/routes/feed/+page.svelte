@@ -135,12 +135,14 @@
   <div class="feed">
     <FeedInput {inputText} bindInputText={(value: string) => { inputText = value; }} />
   
-    <PlaceholderPost profileImage="/eminem.jpg"
-    profileName="Clarissa Doll"
-    timestamp="November 27 at 8:59 AM"/>
+      <PlaceholderPost 
+      profileImage="/eminem.jpg"
+      profileName="Clarissa Doll"
+      timestamp="November 27 at 8:59 AM"
+      postText="🚨 Update on my mini weight-loss journey! 🚨 I reached a milestone! My current goal weight! 😊 I dedicated time in the middle of summer, woke up early and stayed disciplined! For those who didn’t know I was once 215 due to depression and other factors going on in my life at the time, and I made a vow to myself that I would stay healthy! And as soon as I seen I was falling back into old habits I took control of the situation, and I got a trainer then started lifting heavier weights..."
+    />    
   </div>
   
-
   <div class="contact-list-container">
     <ContactList />
   </div>
