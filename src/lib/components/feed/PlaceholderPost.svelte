@@ -5,6 +5,8 @@
   export let postText: string;
 
   let isExpanded = false;
+  let likes = 62; 
+  let comments = 10; 
 
   function togglePostText() {
     isExpanded = !isExpanded;
@@ -80,6 +82,50 @@
   .actions i:hover {
     color: #1877f2;
   }
+
+  .post-image {
+    margin-top: 15px;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: block; 
+    object-fit: cover;
+  }
+
+  .reaction-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+    padding: 10px 15px;
+    border-top: 1px solid #ddd;
+  }
+
+  .reactions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .reactions i {
+    font-size: 18px;
+    cursor: pointer;
+    color: #f44336;
+  }
+
+  .comments {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+
+  .comments i {
+    font-size: 18px;
+    color: #555;
+  }
 </style>
 
 <div class="post-header">
@@ -97,6 +143,17 @@
     {:else}
       {previewText}... <span class="see-more" on:click={togglePostText}>See More</span>
     {/if}
+  </div>
+
+  <img class="post-image" src="https://nypost.com/wp-content/uploads/sites/2/2019/10/gettyimages-187596325.jpg?quality=75&strip=all&w=744" alt="Post image" />
+
+  <div class="reaction-bar">
+    <div class="reactions">
+      <i class="bi bi-hand-thumbs-up-fill"></i> {likes}
+    </div>
+    <div class="comments">
+      <i class="bi bi-chat-fill"></i> {comments}
+    </div>
   </div>
 
   <div class="actions">
