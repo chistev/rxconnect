@@ -3,18 +3,26 @@
   export let profileName: string;
   export let timestamp: string;
   export let postText: string;
+
+  let isExpanded = false;
+
+  function togglePostText() {
+    isExpanded = !isExpanded;
+  }
+
+  const previewText = postText.slice(0, 480);
 </script>
 
 <style>
   .post-header {
-  max-width: 600px;
-  margin: 10px auto;
-  background-color: white;
-  padding: 10px 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: relative; 
-}
+    max-width: 600px;
+    margin: 10px auto;
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative; 
+  }
 
   .profile {
     display: flex;
@@ -52,16 +60,22 @@
     white-space: pre-wrap;
   }
 
+  .see-more {
+    font-weight: bold;
+    color: #333333;
+    cursor: pointer;
+  }
+
   .actions {
-  position: absolute; 
-  top: 10px; 
-  right: 15px; 
-  display: flex;
-  gap: 10px;
-  font-size: 20px;
-  color: #555;
-  cursor: pointer;
-}
+    position: absolute; 
+    top: 10px; 
+    right: 15px; 
+    display: flex;
+    gap: 10px;
+    font-size: 20px;
+    color: #555;
+    cursor: pointer;
+  }
 
   .actions i:hover {
     color: #1877f2;
@@ -76,9 +90,15 @@
       <span class="timestamp">{timestamp} · <i class="bi bi-globe"></i></span>
     </div>
   </div>
+
   <div class="post-text">
-    {postText}
+    {#if isExpanded}
+      {postText}
+    {:else}
+      {previewText}... <span class="see-more" on:click={togglePostText}>See More</span>
+    {/if}
   </div>
+
   <div class="actions">
     <i class="bi bi-three-dots"></i>
     <i class="bi bi-x"></i>
