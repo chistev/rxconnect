@@ -140,6 +140,31 @@
     font-size: 18px;
     color: #555;
   }
+
+  .horizontal-actions {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    padding: 10px 0;
+    font-size: 14px;
+    color: #555;
+  }
+
+  .horizontal-actions .action {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+
+  .horizontal-actions .action i {
+    font-size: 18px;
+  }
+
+  .horizontal-actions .action:hover {
+    color: #1877f2;
+  }
 </style>
 
 <div class="post-header">
@@ -167,6 +192,21 @@
     </div>
     <div class="comments">
       <i class="bi bi-chat-fill"></i> {comments}
+    </div>
+  </div>
+
+  <div class="horizontal-actions">
+    <div class="action">
+      <i class="bi bi-hand-thumbs-up"></i> Like
+    </div>
+    <div class="action">
+      <i class="bi bi-chat"></i> Comment
+    </div>
+    <div class="action">
+      <i class="bi bi-whatsapp"></i> Send
+    </div>
+    <div class="action">
+      <i class="bi bi-share"></i> Share
     </div>
   </div>
 
