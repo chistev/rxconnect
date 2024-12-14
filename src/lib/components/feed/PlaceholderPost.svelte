@@ -14,6 +14,7 @@
   let liked = false;
   let showShareModal = false; // To control the visibility of the share modal
   let isShareModal = false; // Track whether Share was clicked
+  let inputText = '';  // Initialize inputText to empty string
 
   const previewText = postText.slice(0, 480);
 
@@ -42,6 +43,7 @@
   ];
 
   function openShareModal() {
+    inputText = '';  // Clear the inputText to make the textarea empty
     isShareModal = true;  // Mark Share modal as opened
     showShareModal = true;
   }
@@ -247,7 +249,7 @@
   <Modal
     loggedInUserProfilePic={profileImage}
     loggedInUserFirstName={profileName}
-    inputText={postText}
+    inputText={inputText}
     bindInputText={() => {}}
     closeModal={closeShareModal}
     isShareModal={isShareModal} 
