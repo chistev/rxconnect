@@ -12,9 +12,9 @@
   let comments = 10;
   let showLikesModal = false;
   let liked = false;
-  let showShareModal = false; // To control the visibility of the share modal
-  let isShareModal = false; // Track whether Share was clicked
-  let inputText = '';  // Initialize inputText to empty string
+  let showShareModal = false; 
+  let isShareModal = false;
+  let inputText = ''; 
 
   const previewText = postText.slice(0, 480);
 

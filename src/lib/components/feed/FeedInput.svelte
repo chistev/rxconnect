@@ -112,16 +112,8 @@
   </div>
   <div class="options">
     <div class="option">
-      <i class="bi bi-camera-video-fill" style="color: red;"></i>
-      <span>Live video</span>
-    </div>
-    <div class="option">
       <i class="bi bi-image" style="color: green;"></i>
       <span>Photo/video</span>
-    </div>
-    <div class="option">
-      <i class="bi bi-emoji-smile" style="color: orange;"></i>
-      <span>Feeling/activity</span>
     </div>
   </div>
 
