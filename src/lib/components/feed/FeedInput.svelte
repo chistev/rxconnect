@@ -7,8 +7,9 @@
   export let bindInputText: (value: string) => void;
 
   let loggedInUserProfilePic: string = '';
-  let loggedInUserFirstName: string = '';  // Added first name
+  let loggedInUserFirstName: string = '';
   let showModal: boolean = false;
+  let isShareModal: boolean = false;
 
   onMount(() => {
     const unsubscribeUserId = userId.subscribe((id) => {
@@ -17,7 +18,7 @@
           const user = usersData.find((u) => u._id === id);
           if (user) {
             loggedInUserProfilePic = user.profilePic;
-            loggedInUserFirstName = user.firstName;  // Set the first name correctly
+            loggedInUserFirstName = user.firstName;
           }
         });
 
@@ -33,6 +34,12 @@
   });
 
   const openModal = () => {
+    isShareModal = false; 
+    showModal = true;
+  };
+
+  const openShareModal = () => {
+    isShareModal = true;
     showModal = true;
   };
 
@@ -111,7 +118,7 @@
     />
   </div>
   <div class="options">
-    <div class="option">
+    <div class="option" on:click={openShareModal}>
       <i class="bi bi-image" style="color: green;"></i>
       <span>Photo/video</span>
     </div>
@@ -124,6 +131,7 @@
       inputText={inputText}
       bindInputText={bindInputText}
       closeModal={closeModal}
+      isShareModal={isShareModal}
     />
   {/if}
 </div>
