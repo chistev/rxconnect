@@ -205,6 +205,7 @@
         bind:value={inputText}
       ></textarea>
 
+      {#if !isShareModal}
       <div class="post-options">
         <button on:click={triggerFileInput}>
           <i class="bi bi-image"></i>
@@ -215,6 +216,7 @@
           Tag Friends
         </button>
       </div>
+      {/if}
 
       <FileThumbnails selectedFiles={selectedFiles} removeFile={removeFile} />
 
