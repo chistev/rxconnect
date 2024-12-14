@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LikesModal from "./placeholderpost/LikesModal.svelte";
+  import LikesModal from "./placeholderpost/LikesModal.svelte";
 
   export let profileImage: string;
   export let profileName: string;
@@ -10,6 +10,7 @@
   let likes = 62;
   let comments = 10;
   let showLikesModal = false;
+  let liked = false; 
 
   const previewText = postText.slice(0, 480);
 
@@ -19,6 +20,15 @@
 
   function toggleLikesModal() {
     showLikesModal = !showLikesModal;
+  }
+
+  function toggleLike() {
+    liked = !liked;
+    if (liked) {
+      likes += 1; 
+    } else {
+      likes -= 1; 
+    }
   }
 
   let likedBy = [
@@ -196,14 +206,12 @@
   </div>
 
   <div class="horizontal-actions">
-    <div class="action">
-      <i class="bi bi-hand-thumbs-up"></i> Like
+    <div class="action" on:click={toggleLike}>
+      <i class={liked ? "bi bi-hand-thumbs-up-fill" : "bi bi-hand-thumbs-up"}></i> 
+      {liked ? 'Unlike' : 'Like'}
     </div>
     <div class="action">
       <i class="bi bi-chat"></i> Comment
-    </div>
-    <div class="action">
-      <i class="bi bi-whatsapp"></i> Send
     </div>
     <div class="action">
       <i class="bi bi-share"></i> Share
