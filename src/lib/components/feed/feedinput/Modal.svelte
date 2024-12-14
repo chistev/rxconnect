@@ -8,10 +8,10 @@
   export let inputText: string;
   export let bindInputText: (value: string) => void;
   export let closeModal: () => void;
+  export let isShareModal: boolean = false; // New prop to track share modal state
 
   let selectedFiles: File[] = [];
   let taggedFriends: any[] = [];
-
   let fileInput: HTMLInputElement;
   let isTagModalVisible = false;
 
@@ -32,7 +32,7 @@
 
   const updateTaggedFriends = (friends: any[]) => {
     taggedFriends = friends;
-    isTagModalVisible = false; 
+    isTagModalVisible = false;
   };
 
   const untagFriend = (friend: any) => {
@@ -190,7 +190,13 @@
     <div class="modal-body">
       <div class="user-info">
         <img src={loggedInUserProfilePic} alt="User Profile" />
-        <span class="placeholder">What's on your mind, {loggedInUserFirstName}?</span>
+        <span class="placeholder">
+          {#if isShareModal}
+            Say something about this...
+          {:else}
+            What's on your mind, {loggedInUserFirstName}?
+          {/if}
+        </span>
       </div>
 
       <textarea

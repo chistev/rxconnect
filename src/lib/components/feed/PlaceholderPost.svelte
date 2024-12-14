@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Modal from "./feedinput/Modal.svelte";
   import LikesModal from "./placeholderpost/LikesModal.svelte";
 
   export let profileImage: string;
@@ -10,7 +11,9 @@
   let likes = 62;
   let comments = 10;
   let showLikesModal = false;
-  let liked = false; 
+  let liked = false;
+  let showShareModal = false; // To control the visibility of the share modal
+  let isShareModal = false; // Track whether Share was clicked
 
   const previewText = postText.slice(0, 480);
 
@@ -25,9 +28,9 @@
   function toggleLike() {
     liked = !liked;
     if (liked) {
-      likes += 1; 
+      likes += 1;
     } else {
-      likes -= 1; 
+      likes -= 1;
     }
   }
 
@@ -37,6 +40,16 @@
     { name: "Erika Coleman", image: "eminem.jpg" },
     { name: "Bacari Hunter", image: "eminem.jpg" },
   ];
+
+  function openShareModal() {
+    isShareModal = true;  // Mark Share modal as opened
+    showShareModal = true;
+  }
+
+  function closeShareModal() {
+    isShareModal = false; // Reset Share modal state
+    showShareModal = false;
+  }
 </script>
 
 <style>
@@ -213,7 +226,7 @@
     <div class="action">
       <i class="bi bi-chat"></i> Comment
     </div>
-    <div class="action">
+    <div class="action" on:click={openShareModal}>
       <i class="bi bi-share"></i> Share
     </div>
   </div>
@@ -229,3 +242,14 @@
   {showLikesModal}
   {toggleLikesModal}
 />
+
+{#if showShareModal}
+  <Modal
+    loggedInUserProfilePic={profileImage}
+    loggedInUserFirstName={profileName}
+    inputText={postText}
+    bindInputText={() => {}}
+    closeModal={closeShareModal}
+    isShareModal={isShareModal} 
+  />
+{/if}
