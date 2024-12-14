@@ -15,6 +15,7 @@
   let showShareModal = false; 
   let isShareModal = false;
   let inputText = ''; 
+  let showPost = true;
 
   const previewText = postText.slice(0, 480);
 
@@ -43,14 +44,18 @@
   ];
 
   function openShareModal() {
-    inputText = '';  // Clear the inputText to make the textarea empty
-    isShareModal = true;  // Mark Share modal as opened
+    inputText = ''; 
+    isShareModal = true;  
     showShareModal = true;
   }
 
   function closeShareModal() {
-    isShareModal = false; // Reset Share modal state
+    isShareModal = false;
     showShareModal = false;
+  }
+
+  function hidePost() {
+    showPost = false;
   }
 </script>
 
@@ -190,68 +195,137 @@
   .horizontal-actions .action:hover {
     color: #1877f2;
   }
+
+  .hidden-card {
+  max-width: 600px;
+  margin: 10px auto;
+  background-color: #f7f7f7;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.hidden-card p {
+  margin: 5px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.hidden-card .hidden-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.hidden-card .action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+}
+
+.hidden-card .action i {
+  font-size: 18px;
+  color: #555;
+}
+
+.hidden-card .undo-button {
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.hidden-card .undo-button:hover {
+  background-color: #145dbf;
+}
+
 </style>
 
-<div class="post-header">
-  <div class="profile">
-    <img src={profileImage} alt="Profile Picture" />
-    <div class="details">
-      <span class="name">{profileName}</span>
-      <span class="timestamp">{timestamp} · <i class="bi bi-globe"></i></span>
+{#if showPost} 
+  <div class="post-header">
+    <div class="profile">
+      <img src={profileImage} alt="Profile Picture" />
+      <div class="details">
+        <span class="name">{profileName}</span>
+        <span class="timestamp">{timestamp} · <i class="bi bi-globe"></i></span>
+      </div>
+    </div>
+
+    <div class="post-text">
+      {#if isExpanded}
+        {postText}
+      {:else}
+        {previewText}... <span class="see-more" on:click={togglePostText}>See More</span>
+      {/if}
+    </div>
+
+    <img class="post-image" src="https://nypost.com/wp-content/uploads/sites/2/2019/10/gettyimages-187596325.jpg?quality=75&strip=all&w=744" alt="Post image" />
+
+    <div class="reaction-bar">
+      <div class="reactions" on:click={toggleLikesModal}>
+        <i class="bi bi-hand-thumbs-up-fill"></i> {likes}
+      </div>
+      <div class="comments">
+        <i class="bi bi-chat-fill"></i> {comments}
+      </div>
+    </div>
+
+    <div class="horizontal-actions">
+      <div class="action" on:click={toggleLike}>
+        <i class={liked ? "bi bi-hand-thumbs-up-fill" : "bi bi-hand-thumbs-up"}></i> 
+        {liked ? 'Unlike' : 'Like'}
+      </div>
+      <div class="action">
+        <i class="bi bi-chat"></i> Comment
+      </div>
+      <div class="action" on:click={openShareModal}>
+        <i class="bi bi-share"></i> Share
+      </div>
+    </div>
+
+    <div class="actions">
+      <i class="bi bi-x" on:click={hidePost}></i>
     </div>
   </div>
 
-  <div class="post-text">
-    {#if isExpanded}
-      {postText}
-    {:else}
-      {previewText}... <span class="see-more" on:click={togglePostText}>See More</span>
-    {/if}
-  </div>
-
-  <img class="post-image" src="https://nypost.com/wp-content/uploads/sites/2/2019/10/gettyimages-187596325.jpg?quality=75&strip=all&w=744" alt="Post image" />
-
-  <div class="reaction-bar">
-    <div class="reactions" on:click={toggleLikesModal}>
-      <i class="bi bi-hand-thumbs-up-fill"></i> {likes}
-    </div>
-    <div class="comments">
-      <i class="bi bi-chat-fill"></i> {comments}
-    </div>
-  </div>
-
-  <div class="horizontal-actions">
-    <div class="action" on:click={toggleLike}>
-      <i class={liked ? "bi bi-hand-thumbs-up-fill" : "bi bi-hand-thumbs-up"}></i> 
-      {liked ? 'Unlike' : 'Like'}
-    </div>
-    <div class="action">
-      <i class="bi bi-chat"></i> Comment
-    </div>
-    <div class="action" on:click={openShareModal}>
-      <i class="bi bi-share"></i> Share
-    </div>
-  </div>
-
-  <div class="actions">
-    <i class="bi bi-three-dots"></i>
-    <i class="bi bi-x"></i>
-  </div>
-</div>
-
-<LikesModal
-  {likedBy}
-  {showLikesModal}
-  {toggleLikesModal}
-/>
-
-{#if showShareModal}
-  <Modal
-    loggedInUserProfilePic={profileImage}
-    loggedInUserFirstName={profileName}
-    inputText={inputText}
-    bindInputText={() => {}}
-    closeModal={closeShareModal}
-    isShareModal={isShareModal} 
+  <LikesModal
+    {likedBy}
+    {showLikesModal}
+    {toggleLikesModal}
   />
+
+  {#if showShareModal}
+    <Modal
+      loggedInUserProfilePic={profileImage}
+      loggedInUserFirstName={profileName}
+      inputText={inputText}
+      bindInputText={() => {}}
+      closeModal={closeShareModal}
+      isShareModal={isShareModal} 
+    />
+  {/if}
+
+  {:else}
+  <div class="hidden-card">
+    <p><strong>Hidden</strong></p>
+    <p>Hiding posts helps personalize your feed.</p>
+    <button on:click={() => showPost = true} class="undo-button">Undo</button>
+
+    <div class="hidden-actions">
+      <div class="action">
+        <i class="bi bi-clock"></i> Snooze {profileName} for 30 days
+      </div>
+      <div class="action">
+        <i class="bi bi-flag"></i> Report post
+      </div>
+    </div>
+  </div>
 {/if}
