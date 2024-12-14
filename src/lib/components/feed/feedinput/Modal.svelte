@@ -234,7 +234,10 @@
       />
     </div>
 
-    <button class="post-button" disabled={!inputText && selectedFiles.length === 0}>Post</button>
+    <button class="post-button" disabled={(!isShareModal && !inputText && selectedFiles.length === 0)}>
+      Post
+    </button>
+    
   </div>
 
   {#if isTagModalVisible}
