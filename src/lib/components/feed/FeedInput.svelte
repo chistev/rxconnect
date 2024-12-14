@@ -38,11 +38,6 @@
     showModal = true;
   };
 
-  const openShareModal = () => {
-    isShareModal = true;
-    showModal = true;
-  };
-
   const closeModal = () => {
     showModal = false;
   };
@@ -118,7 +113,7 @@
     />
   </div>
   <div class="options">
-    <div class="option" on:click={openShareModal}>
+    <div class="option" on:click={openModal}>
       <i class="bi bi-image" style="color: green;"></i>
       <span>Photo/video</span>
     </div>
@@ -131,7 +126,6 @@
       inputText={inputText}
       bindInputText={bindInputText}
       closeModal={closeModal}
-      isShareModal={isShareModal}
     />
   {/if}
 </div>
